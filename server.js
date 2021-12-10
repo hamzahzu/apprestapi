@@ -6,6 +6,10 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+//call routes
+var routes = require('./routes');
+routes(app);
+
 const PORT = 1000;
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
