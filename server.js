@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 var routes = require('./routes');
 routes(app);
 
-const PORT = 1000;
+const PORT = 1001;
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
 });
