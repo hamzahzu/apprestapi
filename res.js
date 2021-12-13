@@ -1,9 +1,24 @@
 'use strict';
-exports.ok = function(values, res) {
-    var data = {
-        'status': 200,
-        'values': values,
-    };
+exports.ok = function(code, message, values, total, stat, res) {
+    let data = {};
+
+    if (code == 200) {
+        data = {
+            'code': code,
+            'status': stat,
+            'message': message,
+            'total': total,
+            'values': values,
+        };
+    } else {
+        data = {
+            'code': code,
+            'status': stat,
+            'message': message,
+            'values': values,
+        };
+    }
+
 
     res.json(data);
     res.end();

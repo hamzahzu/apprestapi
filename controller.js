@@ -9,12 +9,17 @@ exports.index = function(req, res) {
 
 //get all data mahasiswa
 exports.getAllMahasiswa = function(req, res) {
+    let code, message, total, stat = '';
     connection.query(`SELECT * FROM node_mysql.mahasiswa`,
         function(error, rows, fields) {
             if (error) {
                 console.log(error);
             } else {
-                response.ok(rows, res)
+                code = 200;
+                stat = "sucess";
+                message = "Sucess get all data mahasiswa";
+                total = rows.length;
+                response.ok(code, message, rows, total, stat, res);
             }
         });
 };
@@ -22,12 +27,24 @@ exports.getAllMahasiswa = function(req, res) {
 //get one data mahasiswa
 exports.getById = function(req, res) {
     let id = req.params.id;
+    let code, message, total, stat = '';
     connection.query(`SELECT * FROM node_mysql.mahasiswa WHERE id_mahasiswa = ${id}`,
         function(error, rows, fields) {
             if (error) {
                 console.log(error);
             } else {
-                response.ok(rows, res)
+                if (rows.length > 0) {
+                    code = 200;
+                    stat = "sucess";
+                    message = "Sucess get data mahasiswa";
+                    total = rows.length;
+                    response.ok(code, message, rows, total, stat, res);
+                } else {
+                    code = 500;
+                    stat = "error";
+                    message = "ID mahasiswa is not exist";
+                    response.ok(code, message, rows, total, stat, res);
+                }
             }
 
         });
