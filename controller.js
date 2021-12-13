@@ -67,7 +67,7 @@ exports.postMahasiswa = function(req, res) {
     let code, message, total, stat = '';
     let data = {};
 
-    connection.query(`SELECT * FROM node_mysql.mahasiswa WHERE nim = ${nim}`,
+    connection.query(`SELECT * FROM node_mysql.mahasiswa WHERE nim = '${nim}'`,
         function(error, rows, fields) {
             if (error) {
                 console.log(error);
@@ -101,6 +101,59 @@ exports.postMahasiswa = function(req, res) {
                                 code = 200;
                                 stat = "sucess";
                                 message = "Sucess insert data mahasiswa";
+                                total = rows.length;
+                                response.ok(code, message, data, total, stat, res);
+                            }
+                        });
+                }
+            }
+
+        });
+};
+
+//put data mahasiswa
+exports.putMahasiswa = function(req, res) {
+    let id = req.params.id;
+    let nim = req.body.nim;
+    let nama = req.body.nama;
+    let jurusan = req.body.jurusan;
+    let code, message, total, stat = '';
+    let data = {};
+
+    connection.query(`SELECT * FROM node_mysql.mahasiswa WHERE id_mahasiswa = ${id}`,
+        function(error, rows, fields) {
+            if (error) {
+                console.log(error);
+                code = 500;
+                stat = "error";
+                message = error.sqlMessage;
+                response.ok(code, message, rows, total, stat, res);
+            } else {
+                if (rows.length == 0) {
+                    code = 501;
+                    stat = "error";
+                    message = "ID mahasiswa is not exist";
+                    total = rows.length;
+                    response.ok(code, message, rows, total, stat, res);
+                } else {
+                    connection.query(`UPDATE node_mysql.mahasiswa SET nim='${nim}', nama='${nama}', jurusan='${jurusan}' WHERE id_mahasiswa=${id}`,
+                        function(error, rows, fields) {
+                            if (error) {
+                                console.log(error);
+                                code = 500;
+                                stat = "error";
+                                message = error.sqlMessage;
+                                response.ok(code, message, rows, total, stat, res);
+                            } else {
+                                data = {
+                                    'nim': nim,
+                                    'nama': nama,
+                                    'jurusan': jurusan
+                                };
+
+                                code = 200;
+                                stat = "sucess";
+                                message = "Sucess update data mahasiswa";
                                 total = rows.length;
                                 response.ok(code, message, data, total, stat, res);
                             }
