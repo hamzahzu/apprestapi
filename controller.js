@@ -113,7 +113,7 @@ exports.postMahasiswa = function(req, res) {
 
 //put data mahasiswa
 exports.putMahasiswa = function(req, res) {
-    let id = req.params.id;
+    let id = req.body.id_mahasiswa;
     let nim = req.body.nim;
     let nama = req.body.nama;
     let jurusan = req.body.jurusan;
@@ -154,6 +154,49 @@ exports.putMahasiswa = function(req, res) {
                                 code = 200;
                                 stat = "sucess";
                                 message = "Sucess update data mahasiswa";
+                                total = rows.length;
+                                response.ok(code, message, data, total, stat, res);
+                            }
+                        });
+                }
+            }
+
+        });
+};
+
+exports.deleteMahasiswa = function(req, res) {
+    let id = req.body.id_mahasiswa;
+    let code, message, total, stat = '';
+    let data = {};
+
+    connection.query(`SELECT * FROM node_mysql.mahasiswa WHERE id_mahasiswa = ${id}`,
+        function(error, rows, fields) {
+            if (error) {
+                console.log(error);
+                code = 500;
+                stat = "error";
+                message = error.sqlMessage;
+                response.ok(code, message, rows, total, stat, res);
+            } else {
+                if (rows.length == 0) {
+                    code = 501;
+                    stat = "error";
+                    message = "ID mahasiswa is not exist";
+                    total = rows.length;
+                    response.ok(code, message, rows, total, stat, res);
+                } else {
+                    connection.query(`DELETE from node_mysql.mahasiswa WHERE id_mahasiswa=${id}`,
+                        function(error, rows, fields) {
+                            if (error) {
+                                console.log(error);
+                                code = 500;
+                                stat = "error";
+                                message = error.sqlMessage;
+                                response.ok(code, message, rows, total, stat, res);
+                            } else {
+                                code = 200;
+                                stat = "sucess";
+                                message = "Sucess Delete data mahasiswa";
                                 total = rows.length;
                                 response.ok(code, message, data, total, stat, res);
                             }
