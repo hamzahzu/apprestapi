@@ -11,4 +11,7 @@ module.exports = function(app) {
 
     app.route('/getOneMahasiswa/:id')
         .get(jsonku.getById);
+
+    app.route('/postMahasiswa')
+        .post(jsonku.postMahasiswa);
 }
