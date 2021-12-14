@@ -1,10 +1,10 @@
-let connection = require('../koneksi');
-let mysql = require('mysql');
-let md5 = require('MD5');
-let response = require('../res');
-let jwt = require('jsonwebtoken');
-let config = require('../config/secret');
-let ip = require('ip');
+const connection = require('../koneksi');
+const mysql = require('mysql');
+const md5 = require('MD5');
+const response = require('../res');
+const jwt = require('jsonwebtoken');
+const config = require('../config/secret');
+const ip = require('ip');
 
 //controller register
 exports.registrasi = function(req, res) {
@@ -15,31 +15,50 @@ exports.registrasi = function(req, res) {
         role: req.body.role,
         register_date: new Date()
     }
-
-    let query = "SELCT email FROM ?? WHERE ??";
-    let table = ["user", "email", post.email];
+    console.log(post.email);
+    let query = "SELECT email FROM ?? WHERE ?? = ?";
+    let table = ["node_mysql.user", "email", post.email];
 
     query = mysql.format(query, table);
+
+    let code, message, total, stat = '';
 
     connection.query(query,
         function(error, rows) {
             if (error) {
                 console.log(error);
+                code = 500;
+                stat = "error";
+                message = error.sqlMessage;
+                response.ok(code, message, rows, total, stat, res);
             } else {
                 if (rows.length == 0) {
                     let query = "INSERT INTO ?? SET ?";
-                    let table = ["user"];
+                    let table = ["node_mysql.user"];
 
                     query = mysql.format(query, table);
                     connection.query(query, post, function(error, rows) {
                         if (error) {
                             console.log(error);
+                            code = 500;
+                            stat = "error";
+                            message = error.sqlMessage;
+                            response.ok(code, message, rows, total, stat, res);
                         } else {
-                            response.ok("Successfully added new user data", res);
+                            code = 200;
+                            stat = "sucess";
+                            message = "Successfully added new user data";
+                            total = rows.length;
+                            response.ok(code, message, rows, total, stat, res);
+                            //response.ok("Successfully added new user data", res);
                         }
                     });
                 } else {
-                    response.ok("E-mail registered!", res);
+                    code = 501;
+                    stat = "error";
+                    message = "E-mail registered!";
+                    response.ok(code, message, rows, total, stat, res);
+                    //response.ok("E-mail registered!", res);
                 }
             }
         })

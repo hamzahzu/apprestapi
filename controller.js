@@ -49,7 +49,7 @@ exports.getById = function(req, res) {
                     total = rows.length;
                     response.ok(code, message, rows, total, stat, res);
                 } else {
-                    code = 500;
+                    code = 501;
                     stat = "error";
                     message = "ID mahasiswa is not exist";
                     response.ok(code, message, rows, total, stat, res);
