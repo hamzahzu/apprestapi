@@ -206,3 +206,34 @@ exports.deleteMahasiswa = function(req, res) {
 
         });
 };
+
+//get matakuliah group
+exports.getGroupMatakuliah = function(req, res) {
+    let code, message, total, stat = '';
+    let data = {};
+
+    connection.query(`SELECT c.id_mahasiswa, c.nim,c.nama, c.jurusan, CONCAT(b.matakuliah," : ", b.sks," SKS") AS matakuliah FROM node_mysql.krs a INNER JOIN node_mysql.matakuliah b ON a.id_matakuliah=b.id_matakuliah INNER JOIN node_mysql.mahasiswa c ON a.id_mahasiswa=c.id_mahasiswa ORDER BY c.id_mahasiswa`,
+        function(error, rows, fields) {
+            if (error) {
+                console.log(error);
+                code = 500;
+                stat = "error";
+                message = error.sqlMessage;
+                response.okNested(code, message, rows, total, stat, res);
+            } else {
+                if (rows.length > 0) {
+                    code = 200;
+                    stat = "sucess";
+                    message = "Sucess get detail data mahasiswa";
+                    total = rows.length;
+                    response.okNested(code, message, rows, total, stat, res);
+                } else {
+                    code = 501;
+                    stat = "error";
+                    message = "Data not found";
+                    response.okNested(code, message, rows, total, stat, res);
+                }
+            }
+        }
+    );
+}
