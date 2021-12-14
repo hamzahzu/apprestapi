@@ -1,26 +1,19 @@
 'use strict';
 
-module.exports = function(app) {
-    var jsonku = require('./controller');
+module.exports = app => {
+    let jsonku = require('./controller');
+
+    let router = require("express").Router();
 
     app.route('/')
         .get(jsonku.index);
 
-    app.route('/getAllMahasiswa')
-        .get(jsonku.getAllMahasiswa);
+    router.get("/getAllMahasiswa", jsonku.getAllMahasiswa);
+    router.get("/getOneMahasiswa/:id", jsonku.getById);
+    router.post("/postMahasiswa", jsonku.postMahasiswa);
+    router.put("/putMahasiswa", jsonku.putMahasiswa);
+    router.delete("/deleteMahasiswa", jsonku.deleteMahasiswa);
+    router.get("/get-detail-mahasiswa", jsonku.getGroupMatakuliah);
 
-    app.route('/getOneMahasiswa/:id')
-        .get(jsonku.getById);
-
-    app.route('/postMahasiswa')
-        .post(jsonku.postMahasiswa);
-
-    app.route('/putMahasiswa')
-        .put(jsonku.putMahasiswa);
-
-    app.route('/deleteMahasiswa')
-        .delete(jsonku.deleteMahasiswa);
-
-    app.route('/get-detail-mahasiswa')
-        .get(jsonku.getGroupMatakuliah);
+    app.use("/api/v1", router);
 }
