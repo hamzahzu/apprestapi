@@ -139,3 +139,11 @@ exports.login = function(req, res) {
             }
         })
 }
+
+exports.secretPage = function(req, res) {
+
+    return res.json({
+        status: 200,
+        message: "Success, This page is only for role 2",
+    });
+}
