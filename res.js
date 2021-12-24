@@ -19,7 +19,7 @@ exports.ok = function(code, message, values, total, stat, res) {
         };
     }
 
-    res.json(data);
+    res.status(code).json(data);
     res.end();
 };
 
@@ -58,6 +58,6 @@ exports.okNested = function(code, message, values, total, stat, res) {
         };
     }
 
-    res.json(data);
+    res.status(code).json(data);
     res.end();
 }

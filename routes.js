@@ -1,9 +1,10 @@
 'use strict';
 
 module.exports = app => {
-    let jsonku = require('./controller');
-
-    let router = require("express").Router();
+    const jsonku = require('./controller');
+    const router = require("express").Router();
+    const controller = require('./controllers/c_app');
+    const auth = require('./middleware/auth');
 
     app.route('/')
         .get(jsonku.index);
@@ -14,6 +15,8 @@ module.exports = app => {
     router.put("/putMahasiswa", jsonku.putMahasiswa);
     router.delete("/deleteMahasiswa", jsonku.deleteMahasiswa);
     router.get("/get-detail-mahasiswa", jsonku.getGroupMatakuliah);
+
+    router.get("/cek-visiprima", auth.x_api_key, controller.cekDeliveryVisiprima);
 
     app.use("/api/v1", router);
 }

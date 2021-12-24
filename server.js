@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
@@ -15,7 +16,7 @@ routes(app);
 //call routes from index middleware
 app.use('/auth', require('./middleware'));
 
-const PORT = 1001;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
 });

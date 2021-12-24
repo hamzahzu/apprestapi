@@ -5,7 +5,7 @@ const response = require('../res');
 const jwt = require('jsonwebtoken');
 const config = require('../config/secret');
 const ip = require('ip');
-const { connect } = require('../koneksi');
+const customResponse = require('../response');
 
 //controller register
 exports.registrasi = function(req, res) {
@@ -55,11 +55,11 @@ exports.registrasi = function(req, res) {
                         }
                     });
                 } else {
-                    code = 501;
+                    /* code = 501;
                     stat = "error";
                     message = "E-mail registered!";
-                    response.ok(code, message, rows, total, stat, res);
-                    //response.ok("E-mail registered!", res);
+                    response.ok(code, message, rows, total, stat, res); */
+                    return res.status(401).send({ code: 401, error: true, message: 'E-mail registered!' });
                 }
             }
         })
@@ -146,4 +146,14 @@ exports.secretPage = function(req, res) {
         status: 200,
         message: "Success, This page is only for role 2",
     });
+}
+
+exports.x_api_key = (Request, Response, next) => {
+    const apiKey = Request.headers['x-api-key'];
+    // console.log(apiKey)
+    if (apiKey !== process.env.X_API_KEY) {
+        customResponse.forbidden(Response, 'Your key is invalid');
+    } else {
+        next();
+    }
 }

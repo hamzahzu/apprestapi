@@ -1,16 +1,16 @@
-const mysql = require('mysql');
+require('dotenv').config();
+const mysql = require('mysql')
 
-//koneksi database
-const conn = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    db: "node_mysql"
+let mysqlConnection = mysql.createPool({
+
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
+    connectionLimit: 100,
+    queueLimit: 30,
+    waitForConnection: true,
+    acquireTimeout: 30000 // 30 second
 })
 
-conn.connect((err) => {
-    if (err) throw err;
-    console.log('MySQL terkoneksi');
-});
-
-module.exports = conn;
+module.exports = mysqlConnection;
