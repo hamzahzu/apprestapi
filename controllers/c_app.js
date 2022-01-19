@@ -17,15 +17,48 @@ exports.cekDeliveryVisiprima = async(request, response) => {
         //console.log(getDeliv);
         //return false;
 
-        customResponse.ok(response, 'Mengambil flag Visiprima', getDeliv);
+        customResponse.ok(response, 'Mengambil flag Visiprima', getDeliv.message);
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         if (error === "kosong") {
             customResponse.badRequest(response, 'Data agent kosong');
         } else {
-            // console.log(error);
+            console.log(error.status);
             //customResponse.serverError(response, error);
-            customResponse.ok(response, 'Mengambil flag Visiprima', false);
+            if(error.status == 200){
+                
+                customResponse.ok(response, 'Mengambil flag Visiprima', error.message);
+            }else{
+                
+                customResponse.badRequest(response, error.message);
+            }
+        }
+    }
+}
+
+exports.nestedArray = async(request, response) => {
+    try {
+        //console.log("aaa");
+        const username = request.query.user;
+        const getNested = await model.getNested({ username: username });
+        //console.log(getDeliv);
+        //return false;
+
+        customResponse.ok(response, 'Mengambil flag Visiprima', getNested);
+    } catch (error) {
+        //console.log(error);
+        if (error === "kosong") {
+            customResponse.badRequest(response, 'Data agent kosong');
+        } else {
+            console.log(error.status);
+            //customResponse.serverError(response, error);
+            if(error.status == 200){
+                
+                customResponse.ok(response, 'Mengambil flag Visiprima', error.message);
+            }else{
+                
+                customResponse.badRequest(response, error.message);
+            }
         }
     }
 }

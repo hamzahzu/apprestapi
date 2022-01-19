@@ -1,6 +1,6 @@
 const connection = require('../koneksi');
 const mysql = require('mysql');
-const md5 = require('MD5');
+//const md5 = require('MD5');
 const response = require('../res');
 const jwt = require('jsonwebtoken');
 const config = require('../config/secret');
@@ -55,10 +55,6 @@ exports.registrasi = function(req, res) {
                         }
                     });
                 } else {
-                    /* code = 501;
-                    stat = "error";
-                    message = "E-mail registered!";
-                    response.ok(code, message, rows, total, stat, res); */
                     return res.status(401).send({ code: 401, error: true, message: 'E-mail registered!' });
                 }
             }
@@ -117,11 +113,6 @@ exports.login = function(req, res) {
                                 token: token,
                                 currUser: data.id_user
                             });
-                            /*  code = 200;
-                             stat = "sucess";
-                             message = "JWT tokens are generated";
-                             total = rows.length;
-                             response.ok(code, message, rows, total, stat, res); */
                         }
                     });
 
@@ -131,10 +122,6 @@ exports.login = function(req, res) {
                         error: true,
                         message: "E-mail or password incorrect!",
                     });
-                    /* code = 501;
-                    stat = "error";
-                    message = "E-mail registered!";
-                    response.ok(code, message, rows, total, stat, res); */
                 }
             }
         })

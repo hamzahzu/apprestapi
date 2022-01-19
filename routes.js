@@ -17,6 +17,7 @@ module.exports = app => {
     router.get("/get-detail-mahasiswa", jsonku.getGroupMatakuliah);
 
     router.get("/cek-visiprima", auth.x_api_key, controller.cekDeliveryVisiprima);
+    router.get("/nested", auth.x_api_key, controller.nestedArray);
 
-    app.use("/api/v1", router);
+    app.use("/api/v2", router);
 }
